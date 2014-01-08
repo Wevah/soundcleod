@@ -11,6 +11,8 @@
 
 NSString *const SCTriggerJS = @"$(document.body).trigger($.Event('keydown',{keyCode: %d}))";
 NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window).trigger('popstate')";
+NSURL *baseUrl = nil;
+
 
 @interface WebPreferences (WebPreferencesPrivate)
 - (void)_setLocalStorageDatabasePath:(NSString *)path;
@@ -23,6 +25,9 @@ NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window
 @synthesize popupController;
 @synthesize window;
 @synthesize urlPromptController;
+
+id contentView;
+id tmpHostWindow;
 
 + (void)initialize;
 {
@@ -43,10 +48,13 @@ NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window
 		[keyTap startWatchingMediaKeys];
 	else
 		NSLog(@"Media key monitoring disabled");
+    
+    baseUrl = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:@"BaseUrl"]];
+    if (baseUrl == nil) {
+        baseUrl = [NSURL URLWithString: [@"https://" stringByAppendingString:SCHost]];
+    }
 
-    [[webView mainFrame] loadRequest:
-     [NSURLRequest requestWithURL:[NSURL URLWithString: [@"https://" stringByAppendingString:SCHost]]
-    ]];
+    [[webView mainFrame] loadRequest: [NSURLRequest requestWithURL:baseUrl]];
     
     WebPreferences* prefs = [WebPreferences standardPreferences];
     
@@ -83,10 +91,42 @@ NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window
 
 - (void)awakeFromNib
 {
+    [window setDelegate:self];
     [webView setUIDelegate:self];
     [webView setFrameLoadDelegate:self];
     [webView setPolicyDelegate:self];
+
     [urlPromptController setNavigateDelegate:self];
+    
+    // stored for adding back later, see windowWillClose
+    contentView = [window contentView];
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    // restore "hidden" webview, see windowShouldClose
+    // (would be better to do it in applicationShouldHandleReopen
+    // but that seems to be too early (has no effect)
+    if ([window contentView] != contentView) {
+        [window setContentView:contentView];
+        [webView setHostWindow:nil];
+        tmpHostWindow = nil;
+    }
+}
+
+- (BOOL)windowShouldClose:(NSNotification *)notification
+{
+    // set temporary hostWindow on WebView and remove it from
+    // the closed window to prevent stopping flash plugin
+    // (windowWillClose would be better but that doesn't always work)
+    // http://stackoverflow.com/questions/5307423/plugin-objects-in-webview-getting-destroyed
+    // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/WebKit/Classes/WebView_Class/Reference/Reference.html#//apple_ref/occ/instm/WebView/setHostWindow%3a
+    tmpHostWindow = [[NSWindow alloc] init];
+    [webView setHostWindow:tmpHostWindow];
+    [window setContentView:nil];
+    [contentView removeFromSuperview];
+    
+    return TRUE;
 }
 
 - (WebView *)webView:(WebView *)sender createWebViewWithRequest:(NSURLRequest *)request
@@ -99,6 +139,18 @@ NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window
 {
     if (frame == [webView mainFrame]) {
         [window setTitle:title];
+        if ([self isPlaying]) {
+            title = [title stringByReplacingOccurrencesOfString:@"▶ " withString:@""];
+            NSArray *info = [title componentsSeparatedByString:@" by "];
+            if (info.count == 1) {
+                // current track is part of a set
+                info = [title componentsSeparatedByString:@" in "];
+            }
+            NSUserNotification *notification = [[NSUserNotification alloc] init];
+            notification.title = info[0]; // track
+            notification.informativeText = info[1]; // artist
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+        }
     }
 }
 
@@ -268,7 +320,7 @@ NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window
 {
     if(url != nil) {
         if([url host] != nil) {
-            if([[url host] isEqualToString:SCHost]) {
+            if([[url host] isEqualToString:SCHost] || [[url host] isEqualToString:[baseUrl host]]) {
                 return TRUE;
             }
         }

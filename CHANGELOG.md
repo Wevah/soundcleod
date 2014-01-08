@@ -1,3 +1,10 @@
+## 0.12 (November 8, 2013)
+- Automatic updates yay!
+
+## 0.11 (October 10, 2013)
+- fixed closing window stops music in certain cases
+- notifications support
+
 ## 0.10 (September 13, 2013)
 - added reload menu item and Cmd+R shortcut
 - added main window menu item and Cmd+1 shortcut
