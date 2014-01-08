@@ -16,7 +16,7 @@
 
 extern NSURL *baseUrl;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate> {
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate> {
     SPMediaKeyTap *keyTap;
 }
 
