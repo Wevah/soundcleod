@@ -338,8 +338,9 @@ id tmpHostWindow;
 	NSString *urlString = [[descriptor paramDescriptorForKeyword:keyDirectObject] stringValue];
 	NSURL *url = [NSURL URLWithString:urlString];
 
-	if ([[self class] isSCURL:url])
+	if ([[self class] isSCURL:url]) {
 		[self navigate:urlString];
+	}
 }
 
 
