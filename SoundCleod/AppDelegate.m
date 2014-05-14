@@ -77,6 +77,11 @@ id tmpHostWindow;
     [window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
 }
 
+- (void)applicationWillFinishLaunching:(NSNotification *)notification
+{
+    [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleGetURL:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+}
+
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
 {
@@ -326,6 +331,14 @@ id tmpHostWindow;
         }
     }
     return NO;
+}
+
+- (void)handleGetURL:(NSAppleEventDescriptor *)descriptor withReplyEvent:(NSAppleEventDescriptor **)reply {
+	NSString *urlString = [[descriptor paramDescriptorForKeyword:keyDirectObject] stringValue];
+	NSURL *url = [NSURL URLWithString:urlString];
+
+	if ([[self class] isSCURL:url])
+		[self navigate:urlString];
 }
 
 
