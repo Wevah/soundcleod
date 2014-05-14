@@ -36,7 +36,7 @@
     NSString *value = [[urlInput stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *permalink = nil;
     NSString *error = nil;
-    [urlError setHidden:TRUE];
+    [urlError setHidden:YES];
     
     if([sender tag] == 1) {
         if(value.length > 0) {
@@ -65,7 +65,7 @@
             [NSApp endSheet:urlPrompt returnCode:NSOKButton];
         } else if(error != nil) {
             [urlError setStringValue:error];
-            [urlError setHidden:FALSE];
+            [urlError setHidden:NO];
         }
     } else {
         [urlInput setStringValue:@""];

@@ -26,13 +26,13 @@
     if(webView == nil) {
         [NSBundle loadNibNamed:@"LoginWindow" owner:self];
     }
-    [self setIsFirstLoad:TRUE];
+    [self setIsFirstLoad:YES];
     return [self webView];
 }
 
 - (void)webViewClose:(WebView *)sender
 {
-    [window setIsVisible:FALSE];
+    [window setIsVisible:NO];
     [webView close];
     [webView removeFromSuperview];
     [self setWebView:nil];
@@ -46,8 +46,8 @@
         // new popup can only opened with login url, from there navigation
         // anywhere is allowed
         [listener use];
-        [self setIsFirstLoad:FALSE];
-        [window setIsVisible:TRUE];
+        [self setIsFirstLoad:NO];
+        [window setIsVisible:YES];
     } else {
         [listener ignore];
         // open external links in external browser

@@ -59,7 +59,7 @@ id tmpHostWindow;
     WebPreferences* prefs = [WebPreferences standardPreferences];
     
     [prefs setCacheModel:WebCacheModelPrimaryWebBrowser];
-    [prefs setPlugInsEnabled:TRUE]; // Flash is required for playing sounds in certain cases
+    [prefs setPlugInsEnabled:YES]; // Flash is required for playing sounds in certain cases
     
     [prefs _setLocalStorageDatabasePath:@"~/Library/Application Support/SoundCleod"];
     [prefs setLocalStorageEnabled:YES];
@@ -126,7 +126,7 @@ id tmpHostWindow;
     [window setContentView:nil];
     [contentView removeFromSuperview];
     
-    return TRUE;
+    return YES;
 }
 
 - (WebView *)webView:(WebView *)sender createWebViewWithRequest:(NSURLRequest *)request
@@ -321,11 +321,11 @@ id tmpHostWindow;
     if(url != nil) {
         if([url host] != nil) {
             if([[url host] isEqualToString:SCHost] || [[url host] isEqualToString:[baseUrl host]]) {
-                return TRUE;
+                return YES;
             }
         }
     }
-    return FALSE;
+    return NO;
 }
 
 
