@@ -333,7 +333,8 @@ id tmpHostWindow;
     return NO;
 }
 
-- (void)handleGetURL:(NSAppleEventDescriptor *)descriptor withReplyEvent:(NSAppleEventDescriptor **)reply {
+- (void)handleGetURL:(NSAppleEventDescriptor *)descriptor withReplyEvent:(NSAppleEventDescriptor **)reply
+{
 	NSString *urlString = [[descriptor paramDescriptorForKeyword:keyDirectObject] stringValue];
 	NSURL *url = [NSURL URLWithString:urlString];
 
