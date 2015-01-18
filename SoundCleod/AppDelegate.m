@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 
 NSString *const SCTriggerJS = @"$(document.body).trigger($.Event('keydown',{keyCode: %d}))";
-NSString *const SCNavigateJS = @"history.replaceState(null, null, '%@');$(window).trigger('popstate')";
+NSString *const SCNavigateJS = @"window.location = '%@'";
 NSURL *baseUrl = nil;
 
 
@@ -317,7 +317,7 @@ id tmpHostWindow;
 
 - (void)navigate:(NSString*)permalink
 {
-    NSString *js = [NSString stringWithFormat:SCNavigateJS, permalink];
+	NSString *js = [NSString stringWithFormat:SCNavigateJS, permalink];
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
