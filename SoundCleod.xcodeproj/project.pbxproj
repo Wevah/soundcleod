@@ -15,7 +15,7 @@
 		2624EBAC16A82EF100490144 /* AppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2624EBAB16A82EF100490144 /* AppConstants.m */; };
 		263C2BA11677152500EF4792 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 263C2BA01677152500EF4792 /* Cocoa.framework */; };
 		2666D13717E3104A0071A8BA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2666D13617E3104A0071A8BA /* Sparkle.framework */; };
-		2666D13917E310A20071A8BA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2666D13617E3104A0071A8BA /* Sparkle.framework */; };
+		2666D13917E310A20071A8BA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2666D13617E3104A0071A8BA /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		26A0087116771DA5006FD03A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A0087016771DA5006FD03A /* WebKit.framework */; };
 		26B5794C167A58CD0034D295 /* NSObject+SPInvocationGrabbing.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B5793A167A58CD0034D295 /* NSObject+SPInvocationGrabbing.m */; };
 		26B5794D167A58CD0034D295 /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B5793C167A58CD0034D295 /* SPMediaKeyTap.m */; };
@@ -233,7 +233,7 @@
 		263C2B931677152500EF4792 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Márton Salomváry";
 			};
 			buildConfigurationList = 263C2B961677152500EF4792 /* Build configuration list for PBXProject "SoundCleod" */;
@@ -326,6 +326,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -355,6 +356,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
